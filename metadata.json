@@ -1,0 +1,6 @@
+{
+  "name": "AcademiaSync - AI Student-Faculty Appointment System",
+  "description": "AI-powered student-faculty appointment scheduling system with per-user Google Calendar integration and Gemini assistant.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,193 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile with login credentials, roles, and account metadata",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "username": { "type": "string" },
+        "passwordHash": { "type": "string" },
+        "displayName": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["STUDENT", "FACULTY", "ADMIN"] },
+        "department": { "type": "string" },
+        "studentId": { "type": "string" },
+        "phone": { "type": "string" },
+        "avatarUrl": { "type": "string" },
+        "disabled": { "type": "boolean" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "username", "passwordHash", "displayName", "email", "role"]
+    },
+    "StudentProfile": {
+      "title": "StudentProfile",
+      "description": "Student academic profile and department record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "username": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "department": { "type": "string" },
+        "studentId": { "type": "string" },
+        "phone": { "type": "string" },
+        "disabled": { "type": "boolean" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "username", "name", "email", "department", "studentId"]
+    },
+    "FacultyProfile": {
+      "title": "FacultyProfile",
+      "description": "Faculty directory profile, subjects, office details, and Google Calendar link status",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "username": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "department": { "type": "string" },
+        "title": { "type": "string" },
+        "officeLocation": { "type": "string" },
+        "bio": { "type": "string" },
+        "isGoogleConnected": { "type": "boolean" },
+        "googleEmail": { "type": "string" },
+        "disabled": { "type": "boolean" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "username", "name", "email", "department"]
+    },
+    "Appointment": {
+      "title": "Appointment",
+      "description": "Appointment record between student and faculty",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "studentId": { "type": "string" },
+        "studentName": { "type": "string" },
+        "studentEmail": { "type": "string" },
+        "facultyId": { "type": "string" },
+        "facultyName": { "type": "string" },
+        "facultyEmail": { "type": "string" },
+        "date": { "type": "string" },
+        "startTime": { "type": "string" },
+        "endTime": { "type": "string" },
+        "purpose": { "type": "string" },
+        "notes": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "accepted", "confirmed", "rejected", "cancelled", "completed"] },
+        "rejectionReason": { "type": "string" },
+        "googleCalendarEventId": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "studentId", "studentName", "facultyId", "facultyName", "date", "startTime", "endTime", "purpose", "status"]
+    },
+    "GoogleConfig": {
+      "title": "GoogleConfig",
+      "description": "OAuth 2.0 Client credentials uploaded per user for Google Calendar",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "client_id": { "type": "string" },
+        "client_secret": { "type": "string" },
+        "project_id": { "type": "string" },
+        "auth_uri": { "type": "string" },
+        "token_uri": { "type": "string" },
+        "redirect_uris": { "type": "array" },
+        "uploadedAt": { "type": "string" }
+      },
+      "required": ["userId", "client_id", "client_secret"]
+    },
+    "GoogleToken": {
+      "title": "GoogleToken",
+      "description": "OAuth 2.0 access and refresh tokens for Google Calendar",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "access_token": { "type": "string" },
+        "refresh_token": { "type": "string" },
+        "expiry_date": { "type": "number" },
+        "scope": { "type": "string" },
+        "google_email": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["userId", "access_token"]
+    },
+    "CalendarEvent": {
+      "title": "CalendarEvent",
+      "description": "Synced Google Calendar busy/free slot events cached in database",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "googleEventId": { "type": "string" },
+        "summary": { "type": "string" },
+        "description": { "type": "string" },
+        "start": { "type": "string" },
+        "end": { "type": "string" },
+        "location": { "type": "string" },
+        "htmlLink": { "type": "string" },
+        "isAppointment": { "type": "boolean" },
+        "appointmentId": { "type": "string" },
+        "syncedAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "summary", "start", "end"]
+    },
+    "SystemSetting": {
+      "title": "SystemSetting",
+      "description": "Global application configuration including LLM model and API keys",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "customGeminiApiKey": { "type": "string" },
+        "llmModel": { "type": "string" },
+        "lastPeriodicSync": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User login credentials, roles, and profiles"
+    },
+    "/students/{studentId}": {
+      "schema": "StudentProfile",
+      "description": "Student profiles and academic records"
+    },
+    "/faculty_profiles/{facultyId}": {
+      "schema": "FacultyProfile",
+      "description": "Faculty directory profiles and Google Calendar link status"
+    },
+    "/appointments/{appointmentId}": {
+      "schema": "Appointment",
+      "description": "Student-Faculty appointment records"
+    },
+    "/google_configs/{userId}": {
+      "schema": "GoogleConfig",
+      "description": "Per-user Google OAuth client credentials"
+    },
+    "/google_tokens/{userId}": {
+      "schema": "GoogleToken",
+      "description": "Per-user Google OAuth tokens"
+    },
+    "/calendar_events/{eventId}": {
+      "schema": "CalendarEvent",
+      "description": "Synced Google Calendar events cached for slot booking collision checks"
+    },
+    "/users/{userId}/calendar_events/{eventId}": {
+      "schema": "CalendarEvent",
+      "description": "Per-user subcollection of synced Google Calendar events"
+    },
+    "/system_settings/{settingId}": {
+      "schema": "SystemSetting",
+      "description": "System settings such as LLM Model and API credentials"
+    }
+  }
+}

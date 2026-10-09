@@ -1,0 +1,67 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // User accounts, login credentials, and roles
+    match /users/{userId} {
+      allow get, write: if isValidId(userId);
+      allow list: if true;
+
+      match /calendar_events/{eventId} {
+        allow get, write: if isValidId(eventId);
+        allow list: if true;
+      }
+    }
+
+    // Student Profiles
+    match /students/{studentId} {
+      allow get, write: if isValidId(studentId);
+      allow list: if true;
+    }
+
+    // Faculty Profiles
+    match /faculty_profiles/{facultyId} {
+      allow get, write: if isValidId(facultyId);
+      allow list: if true;
+    }
+
+    // Appointments between students and faculty
+    match /appointments/{appointmentId} {
+      allow get, write: if isValidId(appointmentId);
+      allow list: if true;
+    }
+
+    // Google OAuth client configurations per user
+    match /google_configs/{userId} {
+      allow get, write: if isValidId(userId);
+      allow list: if true;
+    }
+
+    // Google OAuth access & refresh tokens per user
+    match /google_tokens/{userId} {
+      allow get, write: if isValidId(userId);
+      allow list: if true;
+    }
+
+    // Synced Google Calendar events cache
+    match /calendar_events/{eventId} {
+      allow get, write: if isValidId(eventId);
+      allow list: if true;
+    }
+
+    // System Settings (LLM model selection, API credentials)
+    match /system_settings/{settingId} {
+      allow get, write: if isValidId(settingId);
+      allow list: if true;
+    }
+
+    // Startup connection verification
+    match /test/{docId} {
+      allow read, write: if true;
+    }
+  }
+}
